@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SaveTrigger : TriggerObject 
 {
-	public int LevelNum;
+	public Level Level;
 	private SavePoint _savePoint;
 
 	private void Awake()
@@ -16,5 +16,6 @@ public class SaveTrigger : TriggerObject
 	protected override void OnTriggerPlayer (Player player)
 	{
 		SavePointMgr.Instance.SaveSavePoint (_savePoint);
+	    LevelMgr.Instance.CurrentLevel = Level;
 	}
 }

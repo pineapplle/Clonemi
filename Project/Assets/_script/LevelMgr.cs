@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelMgr : MonoBehaviour {
 
 	public static LevelMgr Instance;
+    public Level CurrentLevel;
 	private const float ReloadTime = 3;
 
 	private float _timer;
