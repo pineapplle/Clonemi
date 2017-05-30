@@ -4,10 +4,25 @@ using UnityEngine;
 
 public class GameCamera : MonoBehaviour
 {
+    public static GameCamera Instance;
     public FollowCamera[] FollowCameras;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void LateUpdate()
     {
         FollowPlayer();
+    }
+
+    public void ResetToPlayer()
+    {
+        var x = Player.Current.transform.position.x;
+        var level = LevelMgr.Instance.CurrentLevel;
+        x = Mathf.Clamp(x, level.Lowerlimit, level.Upperlimit);
+        transform.position = new Vector3(x, transform.position.y, transform.position.z);
     }
 
     private void FollowPlayer()
@@ -33,7 +48,7 @@ public class GameCamera : MonoBehaviour
 
     private void OffsetCamera(float diff)
     {
-        if(FollowCameras == null)return;
+        if (FollowCameras == null) return;
         foreach (var followCamera in FollowCameras)
         {
             followCamera.Move(diff);
