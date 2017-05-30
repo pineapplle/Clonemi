@@ -5,10 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class SaveTrigger : TriggerObject 
 {
+	public int LevelNum;
+	private SavePoint _savePoint;
+
+	private void Awake()
+	{
+		_savePoint = new SavePoint (SceneManager.GetActiveScene().name,transform.position);
+	}
+
 	protected override void OnTriggerPlayer (Player player)
 	{
-		var sceneName = SceneManager.GetActiveScene().name;
-		var savepoint = new SavePoint (sceneName,transform.position);
-		SavePointMgr.Instance.SaveSavePoint (savepoint);
+		SavePointMgr.Instance.SaveSavePoint (_savePoint);
 	}
 }

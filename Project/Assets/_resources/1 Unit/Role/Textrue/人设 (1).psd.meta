@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 0f27d31198c4eca4cb193bc5e9195405
-timeCreated: 1494652289
+timeCreated: 1494657234
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -78,13 +78,13 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
   - buildTarget: Standalone
-    maxTextureSize: 2048
-    textureFormat: -1
+    maxTextureSize: 8192
+    textureFormat: 12
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -324,6 +324,6 @@ TextureImporter:
       tessellationDetail: 0
     outline: []
   spritePackingTag: 
-  userData: 97953491385929
+  userData: 97953856296595
   assetBundleName: 
   assetBundleVariant: 

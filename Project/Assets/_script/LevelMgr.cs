@@ -33,3 +33,4 @@ public class LevelMgr : MonoBehaviour {
 		_reload = true;
 	}
 }
+

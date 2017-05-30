@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class camera : MonoBehaviour {
 
-	// Use this for initialization
+
 	void Start () {
 		
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void LateUpdate () {
+		var pos = Player.Current.transform.position;
+		transform.position = new Vector3 (pos.x, transform.position.y, transform.position.z);
+
+
 	}
 }
