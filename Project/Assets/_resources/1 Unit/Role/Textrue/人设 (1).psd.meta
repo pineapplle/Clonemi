@@ -183,12 +183,12 @@ TextureImporter:
       name: "\u4EBA\u8BBE (1)_8"
       rect:
         serializedVersion: 2
-        x: 41.780945
+        x: 43.06189
         y: 558
         width: 330
         height: 307
       alignment: 9
-      pivot: {x: 0.50217897, y: 0.49999997}
+      pivot: {x: 0.49829727, y: 0.49999997}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
