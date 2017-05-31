@@ -1,8 +1,14 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Project/Assets/_levels/siwang.unity.meta
+guid: 8355ef1b01aa51147aaa399b2c986d26
+timeCreated: 1496199046
+licenseType: Pro
+=======
 guid: 0e4ba200c6d566f49bc9fa1521673793
 folderAsset: yes
 timeCreated: 1496122763
 licenseType: Free
+>>>>>>> 66b9c14efba67d1b7e6d257074fb6699af5a42c4:Project/Assets/_resources/4 UI/界面.meta
 DefaultImporter:
   userData: 
   assetBundleName: 
