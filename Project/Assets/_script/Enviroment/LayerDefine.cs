@@ -6,4 +6,5 @@ public class LayerDefine
 {
     public const int Terrain = 8;
     public const int TerrainMask = 1 << 8;
+    public static int EvrMask = LayerMask.GetMask("Terrain", "Trap");
 }

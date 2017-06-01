@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
 
     private void CheckGround()
     {
-        var info = Physics2D.Raycast(transform.position, Vector2.down, 1.66f, LayerDefine.TerrainMask);
+        var info = Physics2D.Raycast(transform.position, Vector2.down, 1.66f, LayerDefine.EvrMask);
         if (info.collider != null)
         {
             OnGrond = true;
