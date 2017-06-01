@@ -3,6 +3,7 @@
 public class Player : MonoBehaviour
 {
     public static Player Current;
+    public bool AutoFly;
     [SerializeField]
     private float MoveSpeed = 4;
     [SerializeField]
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour
     private ParticleSystem _qipao;
 
     private bool OnGrond;
+    private Vector3 GroundNormal;
     private bool Dead;
 
     private void Awake()
@@ -30,18 +32,19 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        var input = false;
-        if (Input.GetKey(KeyCode.A))
+        CheckGround();
+        var h = Input.GetAxis("Horizontal");
+        var v = Input.GetAxis("Vertical");
+        _animator.SetFloat("moveSpeed", Mathf.Abs(h));
+        if (AutoFly)
         {
-            Move(new Vector2(-1, 0));
-            input = true;
+            Move(h, v);
         }
-        if (Input.GetKey(KeyCode.D))
+        else
         {
-            Move(new Vector2(1, 0));
-            input = true;
+            Move(h, 0);
         }
-        if (input)
+        if (Mathf.Abs(h) > float.Epsilon || Mathf.Abs(v) > float.Epsilon)
         {
             PlayFly();
         }
@@ -57,7 +60,6 @@ public class Player : MonoBehaviour
 
     public void PlayFly()
     {
-        _animator.SetBool("fly", true);
         if (!_qipao.isPlaying)
         {
             _qipao.Play();
@@ -66,34 +68,37 @@ public class Player : MonoBehaviour
 
     public void PlayIdle()
     {
-        _animator.SetBool("fly", false);
         _qipao.Stop();
     }
 
-    public void Move(Vector2 vector)
+    public void Move(float x, float y)
     {
         if (Dead)
         {
             return;
         }
-        var v = new Vector3(vector.x, vector.y, 0).normalized;
-        v = Projector(v);
+        var v = new Vector3(x, y, 0).normalized;
+        v = Vector3.ProjectOnPlane(v, GroundNormal);
         transform.position += v * MoveSpeed * Time.deltaTime;
         if (v.x * transform.localScale.x > 0)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
-
     }
 
-    private Vector2 Projector(Vector2 vector)
+    private void CheckGround()
     {
-        var info = Physics2D.Raycast(transform.position, Vector2.down, 1.65f, LayerDefine.TerrainMask);
+        var info = Physics2D.Raycast(transform.position, Vector2.down, 1.66f, LayerDefine.TerrainMask);
         if (info.collider != null)
         {
-            return Vector3.ProjectOnPlane(vector, info.normal);
+            OnGrond = true;
+            GroundNormal = info.normal;
         }
-        return vector;
+        else
+        {
+            OnGrond = false;
+            GroundNormal = Vector3.up;
+        }
     }
 
     public void Jump()
@@ -108,7 +113,7 @@ public class Player : MonoBehaviour
     public void Reborn()
     {
         Dead = false;
-        _animator.Play("idle", 0, 0);
+        _animator.Play("Blend Tree", 0, 0);
     }
 
     public void Die()
@@ -116,13 +121,5 @@ public class Player : MonoBehaviour
         _animator.SetTrigger("died");
         Dead = true;
         LevelMgr.Instance.LevelReload();
-    }
-
-    void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.layer == LayerDefine.Terrain)
-        {
-            OnGrond = true;
-        }
     }
 }
