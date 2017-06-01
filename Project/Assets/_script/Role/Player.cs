@@ -4,20 +4,16 @@ public class Player : MonoBehaviour
 {
     public static Player Current;
     public bool AutoFly;
-    [SerializeField]
-    private float MoveSpeed = 4;
-    [SerializeField]
-    private float JumpRange = 500;
+    public bool Dead;
+    public Rigidbody2D _rigidbody2D;
+    public float MoveSpeed = 4;
+    public float JumpRange = 500;
+
     [SerializeField]
     private Animator _animator;
     [SerializeField]
-    private Rigidbody2D _rigidbody2D;
-    [SerializeField]
     private ParticleSystem _qipao;
 
-    private bool OnGrond;
-    private Vector3 GroundNormal;
-    private bool Dead;
 
     private void Awake()
     {
@@ -26,41 +22,9 @@ public class Player : MonoBehaviour
     }
 
 
-    private void FixedUpdate()
-    {
-        if (Dead)
-        {
-            return;
-        }
-        CheckGround();
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
-        _animator.SetFloat("moveSpeed", Mathf.Abs(h));
-        if (AutoFly)
-        {
-            Move(h, v);
-        }
-        else
-        {
-            Move(h, 0);
-        }
-        if (Mathf.Abs(h) > float.Epsilon || Mathf.Abs(v) > float.Epsilon)
-        {
-            PlayFly();
-        }
-        else
-        {
-            PlayIdle();
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump();
-        }
-    }
-
     public void PlayFly()
     {
-        if (!_qipao.isPlaying)
+        if (_qipao != null && !_qipao.isPlaying)
         {
             _qipao.Play();
         }
@@ -68,17 +32,20 @@ public class Player : MonoBehaviour
 
     public void PlayIdle()
     {
-        _qipao.Stop();
+        if (_qipao != null)
+        {
+            _qipao.Stop();
+        }
     }
 
-    public void Move(float x, float y)
+    public void Move(Vector2 vector)
     {
         if (Dead)
         {
             return;
         }
-        var v = new Vector3(x, y, 0).normalized;
-        v = Vector3.ProjectOnPlane(v, GroundNormal);
+        _animator.SetFloat("moveSpeed", Mathf.Abs(vector.magnitude));
+        Vector3 v = vector;
         transform.position += v * MoveSpeed * Time.deltaTime;
         if (v.x * transform.localScale.x > 0)
         {
@@ -86,28 +53,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void CheckGround()
-    {
-        var info = Physics2D.Raycast(transform.position, Vector2.down, 1.66f, LayerDefine.EvrMask);
-        if (info.collider != null)
-        {
-            OnGrond = true;
-            GroundNormal = info.normal;
-        }
-        else
-        {
-            OnGrond = false;
-            GroundNormal = Vector3.up;
-        }
-    }
-
     public void Jump()
     {
-        if (OnGrond && !Dead)
-        {
-            _rigidbody2D.AddForce(Vector3.up * JumpRange);
-            OnGrond = false;
-        }
+        _rigidbody2D.AddForce(Vector3.up * JumpRange);
     }
 
     public void Reborn()
